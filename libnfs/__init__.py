@@ -45,11 +45,13 @@ class NFSFH(object):
         self._nfs = nfs
         self._name = path
 
+        self._binary = True if 'b' in mode else False
         if codec:
             self._codec = codec
+        elif not self._binary and sys.version_info[0] > 2:
+            self._codec = 'utf-8'
         else:
             self._codec = None
-        self._binary = True if 'b' in mode else False
 
         if path[:6] == "nfs://":
             _pos = path.rfind('/')
